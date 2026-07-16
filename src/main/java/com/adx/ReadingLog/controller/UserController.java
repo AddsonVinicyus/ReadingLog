@@ -4,6 +4,7 @@ import com.adx.ReadingLog.controller.dto.LoginRequestDTO;
 import com.adx.ReadingLog.controller.dto.RegisterRequestDTO;
 import com.adx.ReadingLog.controller.dto.UserResponseDTO;
 import com.adx.ReadingLog.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequestDTO user){
+    public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequestDTO user){
         service.register(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

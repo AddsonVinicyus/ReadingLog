@@ -4,6 +4,7 @@ package com.adx.ReadingLog.service;
 import com.adx.ReadingLog.controller.dto.LoginRequestDTO;
 import com.adx.ReadingLog.controller.dto.RegisterRequestDTO;
 import com.adx.ReadingLog.controller.dto.UserResponseDTO;
+import com.adx.ReadingLog.exceptions.UserAlreadyExistsException;
 import com.adx.ReadingLog.model.User;
 import com.adx.ReadingLog.repository.UserRepository;
 import org.jspecify.annotations.Nullable;
@@ -30,6 +31,7 @@ public class UserService {
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
     public void register(RegisterRequestDTO userDTO){
+        verifyUsername(userDTO.username());
         User user = new User(userDTO);
         user.setPassword(encoder.encode(user.getPassword()));
         repository.save(user);
@@ -43,4 +45,10 @@ public class UserService {
             return jwtService.generateToken(request.username());
         return "fail";
     }
+
+    public void verifyUsername(String username){
+        if(repository.findByUsername(username) != null)
+            throw new UserAlreadyExistsException();
+    }
+
 }
