@@ -1,5 +1,6 @@
 package com.adx.ReadingLog.controller;
 
+import com.adx.ReadingLog.controller.dto.LoginRequestDTO;
 import com.adx.ReadingLog.controller.dto.RegisterRequestDTO;
 import com.adx.ReadingLog.controller.dto.UserResponseDTO;
 import com.adx.ReadingLog.service.UserService;
@@ -20,6 +21,11 @@ public class UserController {
     public ResponseEntity<Void> register(@RequestBody RegisterRequestDTO user){
         service.register(user);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody LoginRequestDTO request){
+        return ResponseEntity.ok(service.verify(request));
     }
 
 }
