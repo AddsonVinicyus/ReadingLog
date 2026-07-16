@@ -31,7 +31,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user = new User(UUID.fromString("d0f2df3d-0d9b-42a9-b06f-cabdb2336c52"), "adx", "12345" );
+    private User user;
 
     public Book(BookRequestDTO bookDTO){
         this.title = bookDTO.title();

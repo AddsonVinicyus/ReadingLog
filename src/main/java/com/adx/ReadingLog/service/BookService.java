@@ -2,27 +2,79 @@ package com.adx.ReadingLog.service;
 
 import com.adx.ReadingLog.controller.dto.BookRequestDTO;
 import com.adx.ReadingLog.controller.dto.BookResponseDTO;
+import com.adx.ReadingLog.exceptions.BookException;
+import com.adx.ReadingLog.exceptions.BookOwnershipException;
 import com.adx.ReadingLog.model.Book;
+import com.adx.ReadingLog.model.User;
 import com.adx.ReadingLog.repository.BookRepository;
+import com.adx.ReadingLog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class BookService {
 
     @Autowired
-    BookRepository repository;
+    BookRepository bookRepository;
 
-    public List<BookResponseDTO> getAllBooks(){
-        return repository.findAll().stream().map(BookResponseDTO::new).toList();
+    @Autowired
+    private UserRepository userRepository;
+
+    public List<BookResponseDTO> getBooksByUser(String username){
+        User user = getUserByUsername(username);
+        return bookRepository.findByUser(user).stream().map(BookResponseDTO::new).toList();
     }
 
 
-    public void addBook(BookRequestDTO bookDTO) {
+    public void addBook(BookRequestDTO bookDTO, String username) {
+        User user = getUserByUsername(username);
         Book book = new Book(bookDTO);
-        repository.save(book);
+        book.setUser(user);
+        book.setStartedAt(LocalDateTime.now());
+        bookRepository.save(book);
     }
+
+    public void updateBook(UUID id, BookRequestDTO bookDTO, String username){
+        Book existingBook = bookRepository.findById(id)
+                .orElseThrow(BookException::new);
+
+        validateBookOwnership(existingBook, username);
+
+        existingBook.setTitle(bookDTO.title());
+        existingBook.setDescription(bookDTO.description());
+        existingBook.setCompleted(bookDTO.completed());
+
+        if(bookDTO.completed())
+            existingBook.setFinishedAt(LocalDateTime.now());
+        else
+            existingBook.setFinishedAt(null);
+
+        bookRepository.save(existingBook);
+
+    }
+
+    public void deleteBook(UUID id, String username){
+        Book book = bookRepository.findById(id)
+                .orElseThrow(BookException::new);
+
+        validateBookOwnership(book, username);
+
+        bookRepository.deleteById(id);
+    }
+
+
+    private User getUserByUsername(String username){
+        return userRepository.findByUsername(username);
+    }
+
+    private void validateBookOwnership(Book book, String username){
+        if(!book.getUser().getUsername().equals(username))
+            throw new BookOwnershipException("Acesso negado: Você não tem permissão para acessar este livro.");
+    }
+
 }
