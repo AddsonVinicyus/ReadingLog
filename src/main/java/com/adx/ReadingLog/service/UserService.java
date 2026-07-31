@@ -6,6 +6,8 @@ import com.adx.ReadingLog.controller.dto.RegisterRequestDTO;
 import com.adx.ReadingLog.controller.dto.UserResponseDTO;
 import com.adx.ReadingLog.exceptions.UserAlreadyExistsException;
 import com.adx.ReadingLog.model.User;
+import com.adx.ReadingLog.model.UserProfile;
+import com.adx.ReadingLog.repository.ProfileRepository;
 import com.adx.ReadingLog.repository.UserRepository;
 import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class UserService {
     private UserRepository repository;
 
     @Autowired
+    private ProfileRepository profileRepository;
+
+    @Autowired
     private JWTService jwtService;
 
     @Autowired
@@ -32,8 +37,14 @@ public class UserService {
 
     public void register(RegisterRequestDTO userDTO){
         verifyUsername(userDTO.username());
+        verifyEmail(userDTO.email());
         User user = new User(userDTO);
         user.setPassword(encoder.encode(user.getPassword()));
+
+        UserProfile profile = new UserProfile(userDTO, user);
+
+        user.setProfile(profile);
+
         repository.save(user);
     }
 
@@ -46,9 +57,15 @@ public class UserService {
         return "fail";
     }
 
-    public void verifyUsername(String username){
+    private void verifyUsername(String username){
         if(repository.findByUsername(username) != null)
             throw new UserAlreadyExistsException();
+    }
+
+    private void verifyEmail(String email){
+        if(profileRepository.findByEmail(email) != null){
+            throw new UserAlreadyExistsException("Email já cadastrado.");
+        }
     }
 
 }

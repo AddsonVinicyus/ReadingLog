@@ -1,5 +1,6 @@
 package com.adx.ReadingLog.controller.dto;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -11,5 +12,15 @@ public record RegisterRequestDTO(
         @NotBlank(message = "A senha é obrigatória")
         @Size(min = 8, message = "A senha deve ter no mínimo 8 caracteres")
         //@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$", message = "A senha deve conter letras e números")
-        String password
+        String password,
+
+        @NotBlank(message = "O nome não pode ser vazio")
+        String firstName,
+
+        @NotBlank(message = "O sobrenome não pode ser vazio")
+        String lastName,
+
+        @NotBlank(message = "O email não pode ser vazio")
+        @Email(message = "Insira um email valido")
+        String email
 ) {}

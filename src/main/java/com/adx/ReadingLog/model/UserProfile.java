@@ -1,5 +1,6 @@
 package com.adx.ReadingLog.model;
 
+import com.adx.ReadingLog.controller.dto.RegisterRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,6 +30,14 @@ public class UserProfile{
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
+
+    public UserProfile(RegisterRequestDTO registerDTO, User user){
+        this.firstName = registerDTO.firstName();
+        this.lastName = registerDTO.lastName();
+        this.email = registerDTO.email();
+        this.user = user;
+
+    }
 
 
 }
