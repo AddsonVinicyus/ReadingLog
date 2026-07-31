@@ -8,6 +8,7 @@ public record BookRequestDTO(
         String title,
         String description,
         String author,
-      //  MultipartFile image,
+        String imgURL,
+        MultipartFile image,
         boolean completed
 ) {}

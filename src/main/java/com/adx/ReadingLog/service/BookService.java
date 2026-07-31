@@ -11,6 +11,7 @@ import com.adx.ReadingLog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.UUID;
 public class BookService {
 
     @Autowired
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -33,7 +34,15 @@ public class BookService {
 
     public void addBook(BookRequestDTO bookDTO, String username) {
         User user = getUserByUsername(username);
+        //String imgUrl = null;
+
+        //if(bookDTO.image() != null){
+          //  imgUrl = uploadImg(bookDTO.image());
+        //}
+
         Book book = new Book(bookDTO);
+
+        //book.setImgUrl(imgUrl);
         book.setUser(user);
         book.setStartedAt(LocalDateTime.now());
         bookRepository.save(book);
@@ -75,6 +84,10 @@ public class BookService {
     private void validateBookOwnership(Book book, String username){
         if(!book.getUser().getUsername().equals(username))
             throw new BookOwnershipException("Acesso negado: Você não tem permissão para acessar este livro.");
+    }
+
+    private String uploadImg(MultipartFile file){
+        return "";
     }
 
 }

@@ -23,6 +23,9 @@ public class User {
     private String username;
     private String password;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private UserProfile profile;
+
     public User(RegisterRequestDTO userDTO){
         this.username = userDTO.username();
         this.password = userDTO.password();

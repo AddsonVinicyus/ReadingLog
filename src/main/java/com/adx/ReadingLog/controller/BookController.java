@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class BookController {
 
     @Autowired
@@ -41,7 +42,8 @@ public class BookController {
     }
 
     @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable UUID id, @AuthenticationPrincipal UserDetails userDetails){
+    public ResponseEntity<Void> deleteBook(@PathVariable UUID id,
+                                           @AuthenticationPrincipal UserDetails userDetails){
         service.deleteBook(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
     }
