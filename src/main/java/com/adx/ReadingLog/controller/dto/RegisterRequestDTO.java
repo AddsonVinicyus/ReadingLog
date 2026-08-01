@@ -15,10 +15,7 @@ public record RegisterRequestDTO(
         String password,
 
         @NotBlank(message = "O nome não pode ser vazio")
-        String firstName,
-
-        @NotBlank(message = "O sobrenome não pode ser vazio")
-        String lastName,
+        String nameProfile,
 
         @NotBlank(message = "O email não pode ser vazio")
         @Email(message = "Insira um email valido")

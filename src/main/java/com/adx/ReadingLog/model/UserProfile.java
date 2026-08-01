@@ -20,10 +20,8 @@ public class UserProfile{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    @Column(name = "first_name", nullable = false, length = 100)
-    private String firstName;
-    @Column(name = "last_name", nullable = false, length = 100)
-    private String lastName;
+    @Column(name = "name_profile", nullable = false, length = 100)
+    private String nameProfile;
     @Column(name = "email", nullable = false, unique = true, length = 150)
     private String email;
 
@@ -32,8 +30,7 @@ public class UserProfile{
     private User user;
 
     public UserProfile(RegisterRequestDTO registerDTO, User user){
-        this.firstName = registerDTO.firstName();
-        this.lastName = registerDTO.lastName();
+        this.nameProfile = registerDTO.nameProfile();
         this.email = registerDTO.email();
         this.user = user;
 

@@ -1,0 +1,1 @@
+ALTER TABLE user_profile RENAME COLUMN first_name TO name_profile

@@ -6,11 +6,10 @@ import java.util.UUID;
 
 public record ProfileResponseDTO(
         UUID uuid,
-        String firstName,
-        String lastName,
+        String nameProfile,
         String email
 ){
     public ProfileResponseDTO(UserProfile profile){
-        this(profile.getId(), profile.getFirstName(), profile.getLastName(), profile.getEmail());
+        this(profile.getId(), profile.getNameProfile(), profile.getEmail());
     }
 }
