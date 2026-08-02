@@ -18,6 +18,6 @@ public record RegisterRequestDTO(
         String nameProfile,
 
         @NotBlank(message = "O email não pode ser vazio")
-        @Email(message = "Insira um email valido")
+        @Email(message = "Insira um email válido")
         String email
 ) {}

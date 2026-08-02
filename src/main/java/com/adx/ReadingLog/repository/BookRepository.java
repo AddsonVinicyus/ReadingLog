@@ -12,5 +12,9 @@ import java.util.UUID;
 public interface BookRepository extends JpaRepository<Book, UUID> {
 
     List<Book> findByUser(User user);
+    List<Book> findByUserAndCompletedTrue(User user);
+    int countByUser(User user);
+    int countByUserAndCompletedTrue(User user);
+
 
 }
