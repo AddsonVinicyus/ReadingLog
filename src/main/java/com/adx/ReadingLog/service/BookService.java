@@ -31,6 +31,17 @@ public class BookService {
         return bookRepository.findByUser(user).stream().map(BookResponseDTO::new).toList();
     }
 
+    public BookResponseDTO getBookById(String username, UUID id) {
+        try {
+            Book book = bookRepository.getBookById(id);
+            validateBookOwnership(book, username);
+
+            return new BookResponseDTO(book);
+        } catch (Exception e){
+            throw new RuntimeException("Erro ao encontrar livro");
+        }
+    }
+
 
     public void addBook(BookRequestDTO bookDTO, String username) {
         User user = getUserByUsername(username);

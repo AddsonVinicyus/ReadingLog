@@ -27,6 +27,12 @@ public class BookController {
         return new ResponseEntity<>(service.getBooksByUser(userDetails.getUsername()), HttpStatus.OK);
     }
 
+    @GetMapping("/books/{id}")
+    public ResponseEntity<BookResponseDTO> getBookById(@PathVariable UUID id,
+                                                       @AuthenticationPrincipal UserDetails userDetails){
+        return new ResponseEntity<>(service.getBookById(userDetails.getUsername(), id), HttpStatus.OK);
+    }
+
     @PostMapping("/books")
     public ResponseEntity<Void> addBook(@Valid @RequestBody BookRequestDTO book,
                                         @AuthenticationPrincipal UserDetails userDetails){
