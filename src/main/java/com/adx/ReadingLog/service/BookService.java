@@ -26,6 +26,9 @@ public class BookService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SupabaseStorageService storageService;
+
     public List<BookResponseDTO> getBooksByUser(String username){
         User user = getUserByUsername(username);
         return bookRepository.findByUser(user).stream().map(BookResponseDTO::new).toList();
@@ -45,15 +48,15 @@ public class BookService {
 
     public void addBook(BookRequestDTO bookDTO, String username) {
         User user = getUserByUsername(username);
-        //String imgUrl = null;
+        String imgUrl = "";
 
-        //if(bookDTO.image() != null){
-          //  imgUrl = uploadImg(bookDTO.image());
-        //}
+        if(bookDTO.image() != null && !bookDTO.image().isEmpty()){
+            imgUrl = storageService.uploadFile(bookDTO.image());
+        }
 
         Book book = new Book(bookDTO);
 
-        //book.setImgUrl(imgUrl);
+        book.setImgUrl(imgUrl);
         book.setUser(user);
         book.setStartedAt(LocalDateTime.now());
         bookRepository.save(book);
