@@ -9,11 +9,12 @@ public record BookResponseDTO (
     String title,
     String author,
     String description,
+    String imgUrl,
     boolean completed
 ){
 
     public BookResponseDTO(Book book){
-        this(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.isCompleted());
+        this(book.getId(), book.getTitle(), book.getAuthor(), book.getDescription(), book.getImgUrl(), book.isCompleted());
     }
 
 }

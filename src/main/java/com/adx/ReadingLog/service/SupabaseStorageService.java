@@ -44,4 +44,17 @@ public class SupabaseStorageService {
         }
     }
 
+    public void deleteFile(String fileName){
+        try {
+            String url = String.format("%s/storage/v1/object/%s/%s", supabaseUrl, bucketName, fileName);
+            restClient.delete()
+                    .uri(url)
+                    .header("Authorization", "Bearer " + supabaseKey)
+                    .retrieve()
+                    .toBodilessEntity();
+        } catch (Exception e){
+            System.err.println("Erro ao excluir image do Supabase " + e.getMessage());
+        }
+    }
+
 }

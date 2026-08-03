@@ -87,9 +87,22 @@ public class BookService {
 
         validateBookOwnership(book, username);
 
+        String fileName = extractFileNameFromUrl(book.getImgUrl());
+
+        if(fileName != null && !fileName.isEmpty()){
+            storageService.deleteFile(fileName);
+        }
+
         bookRepository.deleteById(id);
     }
 
+    private String extractFileNameFromUrl(String url){
+        if(url == null || !url.contains("/")){
+            return null;
+        }
+
+        return url.substring(url.lastIndexOf("/") + 1);
+    }
 
     private User getUserByUsername(String username){
         return userRepository.findByUsername(username);
