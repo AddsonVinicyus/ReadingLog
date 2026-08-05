@@ -4,6 +4,7 @@ package com.adx.ReadingLog.controller;
 import com.adx.ReadingLog.controller.dto.BookRequestDTO;
 import com.adx.ReadingLog.controller.dto.BookResponseDTO;
 import com.adx.ReadingLog.service.BookService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "*")
+@SecurityRequirement(name = "bearerAuth")
 public class BookController {
 
     @Autowired

@@ -4,6 +4,7 @@ import com.adx.ReadingLog.controller.dto.LoginRequestDTO;
 import com.adx.ReadingLog.controller.dto.RegisterRequestDTO;
 import com.adx.ReadingLog.controller.dto.UserResponseDTO;
 import com.adx.ReadingLog.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
