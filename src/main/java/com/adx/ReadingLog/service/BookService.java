@@ -2,11 +2,14 @@ package com.adx.ReadingLog.service;
 
 import com.adx.ReadingLog.controller.dto.BookRequestDTO;
 import com.adx.ReadingLog.controller.dto.BookResponseDTO;
+import com.adx.ReadingLog.controller.dto.ReadingSessionRequestDTO;
 import com.adx.ReadingLog.exceptions.BookException;
 import com.adx.ReadingLog.exceptions.BookOwnershipException;
 import com.adx.ReadingLog.model.Book;
+import com.adx.ReadingLog.model.ReadingSession;
 import com.adx.ReadingLog.model.User;
 import com.adx.ReadingLog.repository.BookRepository;
+import com.adx.ReadingLog.repository.ReadingSessionRepository;
 import com.adx.ReadingLog.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +28,9 @@ public class BookService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ReadingSessionRepository sessionRepository;
 
     @Autowired
     private SupabaseStorageService storageService;
@@ -96,6 +102,15 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    public void createSession(ReadingSessionRequestDTO sessionDTO, String username){
+        Book book = bookRepository.findById(UUID.fromString(sessionDTO.bookID()))
+                .orElseThrow(BookException::new);
+        validateBookOwnership(book, username);
+
+        ReadingSession session = new ReadingSession(sessionDTO);
+        sessionRepository.save(session);
+    }
+
     private String extractFileNameFromUrl(String url){
         if(url == null || !url.contains("/")){
             return null;
@@ -111,10 +126,6 @@ public class BookService {
     private void validateBookOwnership(Book book, String username){
         if(!book.getUser().getUsername().equals(username))
             throw new BookOwnershipException("Acesso negado: Você não tem permissão para acessar este livro.");
-    }
-
-    private String uploadImg(MultipartFile file){
-        return "";
     }
 
 }
