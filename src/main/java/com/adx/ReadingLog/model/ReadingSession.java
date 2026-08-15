@@ -1,6 +1,7 @@
 package com.adx.ReadingLog.model;
 
 
+import com.adx.ReadingLog.controller.dto.ReadingSessionRequestDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -37,5 +38,12 @@ public class ReadingSession {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
+
+    public ReadingSession(ReadingSessionRequestDTO sessionDTO){
+        this.durationSeconds = sessionDTO.durationSeconds();
+        this.pagesRead = sessionDTO.pagesRead();
+        this.startTime = sessionDTO.startTime();
+        this.endTime = sessionDTO.endTime();
+    }
 
 }
