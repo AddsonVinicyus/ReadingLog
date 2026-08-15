@@ -3,6 +3,7 @@ package com.adx.ReadingLog.controller;
 
 import com.adx.ReadingLog.controller.dto.BookRequestDTO;
 import com.adx.ReadingLog.controller.dto.BookResponseDTO;
+import com.adx.ReadingLog.controller.dto.ReadingSessionRequestDTO;
 import com.adx.ReadingLog.service.BookService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -54,6 +55,13 @@ public class BookController {
                                            @AuthenticationPrincipal UserDetails userDetails){
         service.deleteBook(id, userDetails.getUsername());
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/books/sessions")
+    public ResponseEntity<Void> createSession(@RequestBody ReadingSessionRequestDTO session,
+                                              @AuthenticationPrincipal UserDetails userDetails){
+        service.createSession(session, userDetails.getUsername());
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 }
