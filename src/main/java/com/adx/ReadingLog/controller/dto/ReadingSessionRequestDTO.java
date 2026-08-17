@@ -7,7 +7,6 @@ public record ReadingSessionRequestDTO(
         Integer durationSeconds,
         Integer pagesRead,
         LocalDateTime startTime,
-        LocalDateTime endTime,
-        String bookID
+        LocalDateTime endTime
 )
 {}
