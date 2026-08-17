@@ -102,8 +102,8 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    public void createSession(ReadingSessionRequestDTO sessionDTO, String username){
-        Book book = bookRepository.findById(UUID.fromString(sessionDTO.bookID()))
+    public void createSession(UUID id, ReadingSessionRequestDTO sessionDTO, String username){
+        Book book = bookRepository.findById(id)
                 .orElseThrow(BookException::new);
         validateBookOwnership(book, username);
 

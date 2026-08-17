@@ -57,10 +57,11 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/books/sessions")
-    public ResponseEntity<Void> createSession(@RequestBody ReadingSessionRequestDTO session,
+    @PostMapping("/books/sessions/{id}")
+    public ResponseEntity<Void> createSession(@PathVariable UUID id,
+                                              @RequestBody ReadingSessionRequestDTO session,
                                               @AuthenticationPrincipal UserDetails userDetails){
-        service.createSession(session, userDetails.getUsername());
+        service.createSession(id, session, userDetails.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
