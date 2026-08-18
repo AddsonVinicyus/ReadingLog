@@ -39,11 +39,13 @@ public class ReadingSession {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    public ReadingSession(ReadingSessionRequestDTO sessionDTO){
+    public ReadingSession(ReadingSessionRequestDTO sessionDTO, Book book){
         this.durationSeconds = sessionDTO.durationSeconds();
         this.pagesRead = sessionDTO.pagesRead();
         this.startTime = sessionDTO.startTime();
         this.endTime = sessionDTO.endTime();
+        this.book = book;
+        this.user = book.getUser();
     }
 
 }
