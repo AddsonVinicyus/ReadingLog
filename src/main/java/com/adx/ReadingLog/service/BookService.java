@@ -107,7 +107,7 @@ public class BookService {
                 .orElseThrow(BookException::new);
         validateBookOwnership(book, username);
 
-        ReadingSession session = new ReadingSession(sessionDTO);
+        ReadingSession session = new ReadingSession(sessionDTO, book);
         sessionRepository.save(session);
     }
 
