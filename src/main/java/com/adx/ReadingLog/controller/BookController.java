@@ -4,6 +4,7 @@ package com.adx.ReadingLog.controller;
 import com.adx.ReadingLog.controller.dto.BookRequestDTO;
 import com.adx.ReadingLog.controller.dto.BookResponseDTO;
 import com.adx.ReadingLog.controller.dto.ReadingSessionRequestDTO;
+import com.adx.ReadingLog.controller.dto.ReadingSessionResponseDTO;
 import com.adx.ReadingLog.service.BookService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -63,6 +64,15 @@ public class BookController {
                                               @AuthenticationPrincipal UserDetails userDetails){
         service.createSession(id, session, userDetails.getUsername());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/books/sessions/{id}")
+    public ResponseEntity<ReadingSessionResponseDTO> getSessionResume (
+            @PathVariable UUID id,
+            @AuthenticationPrincipal UserDetails userDetails
+            ){
+        return new ResponseEntity<>(service.getSessionResume(id, userDetails.getUsername()), HttpStatus.OK);
+
     }
 
 }
