@@ -67,11 +67,11 @@ public class BookController {
     }
 
     @GetMapping("/books/sessions/{id}")
-    public ResponseEntity<ReadingSessionResponseDTO> getSessionResume (
+    public ResponseEntity<ReadingSessionResponseDTO> getSessionInfo (
             @PathVariable UUID id,
             @AuthenticationPrincipal UserDetails userDetails
             ){
-        return new ResponseEntity<>(service.getSessionResume(id, userDetails.getUsername()), HttpStatus.OK);
+        return new ResponseEntity<>(service.getSessionInfo(id, userDetails.getUsername()), HttpStatus.OK);
 
     }
 
