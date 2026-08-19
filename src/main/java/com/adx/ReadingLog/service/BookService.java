@@ -3,6 +3,7 @@ package com.adx.ReadingLog.service;
 import com.adx.ReadingLog.controller.dto.BookRequestDTO;
 import com.adx.ReadingLog.controller.dto.BookResponseDTO;
 import com.adx.ReadingLog.controller.dto.ReadingSessionRequestDTO;
+import com.adx.ReadingLog.controller.dto.ReadingSessionResponseDTO;
 import com.adx.ReadingLog.exceptions.BookException;
 import com.adx.ReadingLog.exceptions.BookOwnershipException;
 import com.adx.ReadingLog.model.Book;
@@ -109,6 +110,26 @@ public class BookService {
 
         ReadingSession session = new ReadingSession(sessionDTO, book);
         sessionRepository.save(session);
+    }
+
+    public ReadingSessionResponseDTO getSessionResume(UUID id, String username){
+        Book book = bookRepository.findById(id)
+                .orElseThrow(BookException::new);
+
+        validateBookOwnership(book, username);
+
+        int totalSessions = sessionRepository.countByBook(book);
+        int totalPagesRead = sessionRepository.countPagesReadByBook(book);
+        int totalDurationSeconds = sessionRepository.countDurationSecondsByBook(book);
+        String lastSession = sessionRepository.findLastSessionDate(book).toString();
+
+        return new ReadingSessionResponseDTO(
+                id,
+                totalSessions,
+                totalDurationSeconds,
+                totalPagesRead,
+                lastSession
+        );
     }
 
     private String extractFileNameFromUrl(String url){
