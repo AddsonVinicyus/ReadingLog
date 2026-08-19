@@ -112,7 +112,7 @@ public class BookService {
         sessionRepository.save(session);
     }
 
-    public ReadingSessionResponseDTO getSessionResume(UUID id, String username){
+    public ReadingSessionResponseDTO getSessionInfo(UUID id, String username){
         Book book = bookRepository.findById(id)
                 .orElseThrow(BookException::new);
 
